@@ -7,7 +7,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { collections } from "~/lib/catalogue";
 import { featuredCategories } from "~/lib/catalogue";
-import { bestSellers, newArrivals } from "~/lib/catalogue";
+import { bestSellers, newArrivals, getProducts } from "~/lib/catalogue";
 import { getRates } from "~/config/rates";
 import { siteConfig } from "~/config/site";
 import { testimonials } from "~/config/testimonials";
@@ -321,6 +321,23 @@ function ProductRail({ id, eyebrow, title, sub, items, cta }: {
   );
 }
 
+/* ============================ Featured products ============================ */
+
+function FeaturedRail() {
+  const items = getProducts().filter((p) => p.featured).slice(0, 4);
+  if (!items.length) return null;
+  return (
+    <ProductRail
+      id="featured"
+      eyebrow="Handpicked for you"
+      title="Featured Jewellery"
+      sub="A considered edit of pieces selected for their timeless beauty and craft."
+      items={items}
+      cta="Explore the Catalogue"
+    />
+  );
+}
+
 /* ============================ Testimonials ============================ */
 
 function TestimonialsSection() {
@@ -487,6 +504,7 @@ function Home() {
         items={bestSellers}
         cta="Shop Best Sellers"
       />
+      <FeaturedRail />
       <TestimonialsSection />
       <VisitSection />
       <NewsletterSignup />
