@@ -12,9 +12,9 @@
 
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { getCategory } from "~/config/categories";
+import { getCategory } from "~/lib/catalogue";
 import { computePrice, rateFor } from "~/config/pricing";
-import { getProduct, products, type Product } from "~/config/products";
+import { getProduct, products, type Product } from "~/lib/catalogue";
 import { siteConfig } from "~/config/site";
 import { cartStore } from "~/lib/cart";
 import { formatINR, formatINRPrecise, formatWeight } from "~/lib/format";

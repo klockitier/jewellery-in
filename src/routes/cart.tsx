@@ -16,9 +16,9 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { COUPONS, DEFAULT_LOCK_MS, SHIPPING, shippingFor } from "~/config/cart";
-import { getCategory } from "~/config/categories";
+import { getCategory } from "~/lib/catalogue";
 import { computePrice } from "~/config/pricing";
-import { getProduct, type Product } from "~/config/products";
+import { getProduct, type Product } from "~/lib/catalogue";
 import {
   cartStore,
   formatLockRemaining,

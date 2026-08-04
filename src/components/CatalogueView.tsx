@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { categories, getCategory } from "~/config/categories";
+import { categories, getCategory } from "~/lib/catalogue";
 import { computePrice, rateFor } from "~/config/pricing";
 import { getRates } from "~/config/rates";
-import { products, type Product } from "~/config/products";
+import { products, type Product } from "~/lib/catalogue";
 import { formatINR } from "~/lib/format";
 import { ProductCard } from "./ProductCard";
 

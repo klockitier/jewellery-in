@@ -5,9 +5,9 @@
  */
 
 import { createFileRoute } from "@tanstack/react-router";
-import { collections } from "~/config/collections";
-import { featuredCategories } from "~/config/categories";
-import { bestSellers, newArrivals } from "~/config/products";
+import { collections } from "~/lib/catalogue";
+import { featuredCategories } from "~/lib/catalogue";
+import { bestSellers, newArrivals } from "~/lib/catalogue";
 import { getRates } from "~/config/rates";
 import { siteConfig } from "~/config/site";
 import { testimonials } from "~/config/testimonials";

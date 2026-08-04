@@ -3,7 +3,7 @@
  * contact and socials — all read from config.
  */
 
-import { categories } from "~/config/categories";
+import { categories } from "~/lib/catalogue";
 import { siteConfig } from "~/config/site";
 import {
   ClockIcon,

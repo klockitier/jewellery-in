@@ -21,7 +21,7 @@
 import { useSyncExternalStore } from "react";
 import { DEFAULT_LOCK_MS } from "~/config/cart";
 import { rateFor } from "~/config/pricing";
-import { getProduct } from "~/config/products";
+import { getProduct } from "~/lib/catalogue";
 import { getRates, type RateQuote } from "~/config/rates";
 
 const KEY_V2 = "smj.cart.v2";

@@ -4,6 +4,7 @@ export type ProductBadge = "new" | "bestseller" | "offer";
 export type StoneDetails = { type: string; carat?: number; count?: number; clarity?: string };
 export interface Product {
   id: string; slug: string; name: string; category: string; metal: Metal; purity: Purity;
+  featured?: boolean;
   weightGrams: number; makingCharge: number; stones?: StoneDetails; gender: "women" | "men" | "unisex";
   occasion: "bridal" | "everyday" | "festive" | "office" | "gifting"; tags: string[];
   isNew: boolean; isBestSeller: boolean; offer?: string; offerPercent?: number; inStock: boolean;

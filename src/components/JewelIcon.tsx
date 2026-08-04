@@ -7,7 +7,7 @@
  */
 
 import type { ReactNode } from "react";
-import type { CategoryIconKey } from "~/config/categories";
+import type { CategoryIconKey } from "~/lib/catalogue";
 
 interface Props {
   kind: CategoryIconKey;

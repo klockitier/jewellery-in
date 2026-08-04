@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { categories } from "~/config/categories";
+import { categories } from "~/lib/catalogue";
 import { JewelIcon } from "~/components/JewelIcon";
 import { pageHead } from "~/lib/seo";
 export const Route=createFileRoute("/categories")({head:()=>pageHead({title:"Shop by Category — Shri Madhav Jewellers",path:"/categories"}),component:Categories});

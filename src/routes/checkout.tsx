@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { cartStore, useCartItems, isLocked, lockExpiresAt, formatLockRemaining } from "~/lib/cart";
-import { getProduct } from "~/config/products";
+import { getProduct } from "~/lib/catalogue";
 import { computePrice } from "~/config/pricing";
 import { getRates } from "~/config/rates";
 import { shippingFor } from "~/config/cart";

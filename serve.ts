@@ -9,6 +9,11 @@
 // with an already-running server. Every sandbox user has passwordless sudo, so
 // the takeover works across user boundaries.
 import handler from "./dist/server/server.js";
+import { readFileSync, writeFileSync, renameSync, mkdirSync } from "node:fs";
+import { createHmac, timingSafeEqual, randomBytes } from "node:crypto";
+import { products as seedProducts } from "./src/config/products";
+import { collections as seedCollections } from "./src/config/collections";
+import { categories as seedCategories } from "./src/config/categories";
 
 // Pinned, NOT read from the environment. The published preview URL
 // (<label>.<PUBLIC_SITE_DOMAIN>) is reverse-proxied to 0.0.0.0:3000 inside the
@@ -313,7 +318,40 @@ async function injectSSRRatePayload(response: Response): Promise<Response> {
   return new Response(body, { status: response.status, statusText: response.statusText, headers });
 }
 
+type Overlay = { version: 1; products: Record<string, any>; collections: Record<string, any>; categories: Record<string, any> };
+const DATA_FILE = `${import.meta.dir}/data/catalogue.json`;
+const emptyOverlay = (): Overlay => ({ version: 1, products: {}, collections: {}, categories: {} });
+function readOverlay(): Overlay { try { const o = JSON.parse(readFileSync(DATA_FILE, "utf8")); return { ...emptyOverlay(), ...o }; } catch { return emptyOverlay(); } }
+function mergeList<T extends Record<string, any>>(seed: T[], changes: Record<string, any>, key: string): T[] {
+  const out = seed.map(x => ({ ...x })); const index = new Map(out.map(x => [x[key], x]));
+  for (const [id, patch] of Object.entries(changes || {})) { if ((patch as any)?.deleted) { const i = out.findIndex(x => x[key] === id); if (i >= 0) out.splice(i, 1); index.delete(id); } else if (index.has(id)) Object.assign(index.get(id), patch); else out.push({ ...(patch as any), [key]: id }); }
+  return out;
+}
+function catalogue() { const o = readOverlay(); return { products: mergeList(seedProducts as any, o.products, "id"), collections: mergeList(seedCollections as any, o.collections, "slug"), categories: mergeList(seedCategories as any, o.categories, "slug") }; }
+function saveOverlay(o: Overlay) { mkdirSync(`${import.meta.dir}/data`, { recursive: true }); const tmp = `${DATA_FILE}.${process.pid}.tmp`; writeFileSync(tmp, JSON.stringify(o, null, 2)); renameSync(tmp, DATA_FILE); }
+const b64 = (x: Uint8Array | string) => Buffer.from(x).toString("base64url");
+function sessionToken(username: string) { const payload = b64(JSON.stringify({ u: username, exp: Date.now() + 86400000 })); return `${payload}.${b64(createHmac("sha256", process.env.ADMIN_SESSION_SECRET ?? "").update(payload).digest())}`; }
+function validSession(req: Request) { const raw = req.headers.get("cookie")?.match(/(?:^|;\s*)smj_admin=([^;]+)/)?.[1]; if (!raw || !process.env.ADMIN_SESSION_SECRET) return false; const [p, sig] = raw.split("."); if (!p || !sig) return false; try { const expected = createHmac("sha256", process.env.ADMIN_SESSION_SECRET).update(p).digest(); const got = Buffer.from(sig, "base64url"); const data = JSON.parse(Buffer.from(p, "base64url").toString()); return got.length === expected.length && timingSafeEqual(got, expected) && data.exp > Date.now() && data.u === process.env.ADMIN_USERNAME; } catch { return false; } }
+const attempts = new Map<string, { n: number; at: number }>();
+function slugify(v: string) { return v.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
+async function adminApi(req: Request, pathname: string): Promise<Response | null> {
+  if (!pathname.startsWith("/api/admin/")) return null;
+  if (pathname === "/api/admin/login" && req.method === "POST") { try { const b = await req.json() as any; const ip = req.headers.get("x-forwarded-for") || "unknown"; const a = attempts.get(ip); const now = Date.now(); if (a && now-a.at < 900000 && a.n >= 10) return json({ error: "too-many-attempts" }, 429); if (!a || now-a.at >= 900000) attempts.set(ip, { n: 1, at: now }); else a.n++; const u = String(b.username ?? ""), p = String(b.password ?? ""); const eu = process.env.ADMIN_USERNAME ?? "", ep = process.env.ADMIN_PASSWORD ?? ""; const eq = (x: string, y: string) => { const xb = Buffer.from(x), yb = Buffer.from(y); return xb.length === yb.length && timingSafeEqual(xb, yb); }; if (!eq(u, eu) || !eq(p, ep)) return json({ error: "invalid-credentials" }, 401); return new Response(JSON.stringify({ ok: true }), { headers: { "content-type": "application/json", "set-cookie": `smj_admin=${sessionToken(u)}; HttpOnly; Path=/; SameSite=Strict; Max-Age=86400` } }); } catch { return json({ error: "invalid-request" }, 400); } }
+  if (pathname === "/api/admin/logout" && req.method === "POST") return new Response(JSON.stringify({ ok: true }), { headers: { "content-type": "application/json", "set-cookie": "smj_admin=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict" } });
+  if (pathname === "/api/admin/session" && req.method === "GET") return validSession(req) ? json({ authed: true }) : json({ authed: false }, 401);
+  if (!validSession(req)) return json({ error: "unauthorized" }, 401);
+  const m = pathname.match(/^\/api\/admin\/(products|collections|categories)(?:\/([^/]+))?$/); const resource = m?.[1], id = m?.[2];
+  if (pathname === "/api/admin/catalogue" && req.method === "GET") return json({ ...catalogue(), overlay: readOverlay() });
+  if (pathname === "/api/admin/upload" && req.method === "POST") { const form = await req.formData(); const file = form.get("file"); if (!(file instanceof File) || !file.type.startsWith("image/") || file.size > 5*1024*1024) return json({ error: "invalid-image" }, 400); const ext = (file.name.match(/\.[a-z0-9]+$/i)?.[0] || ".bin").toLowerCase(); const safe = (file.name.replace(/[^a-z0-9._-]/gi, "_").slice(0,80) || "image") + ext; const name = `${Date.now()}-${randomBytes(4).toString("hex")}-${safe.replace(/\.[a-z0-9]+$/i, "")}${ext}`; mkdirSync(`${import.meta.dir}/public/images/uploads`, { recursive: true }); writeFileSync(`${import.meta.dir}/public/images/uploads/${name}`, Buffer.from(await file.arrayBuffer())); return json({ url: `/images/uploads/${name}` }); }
+  if (!resource) return json({ error: "not-found" }, 404); const o = readOverlay(); const seed = resource === "products" ? seedProducts : resource === "collections" ? seedCollections : seedCategories; const key = resource === "products" ? "id" : "slug"; const map = (o as any)[resource] as Record<string, any>;
+  if (req.method === "DELETE" && id) { map[id] = { deleted: true }; saveOverlay(o); return json({ ok: true }); }
+  if (req.method === "POST") { const body = await req.json() as any; if (resource === "products") { if (!body.name || !body.category || !body.metal || !body.purity || body.weightGrams == null || body.makingCharge == null || !body.gender || !body.occasion) return json({ error: "missing-fields" }, 400); let n=9001; while (map[`p${n}`]) n++; body.id=`p${n}`; body.slug=body.slug || slugify(body.name); Object.assign(body, { tags: body.tags || [], images: body.images || [], isNew: !!body.isNew, isBestSeller: !!body.isBestSeller, inStock: body.inStock !== false }); map[body.id]=body; } else { const required = resource === "collections" ? ["slug","name"] : ["slug","name","icon"]; if (required.some(k => !body[k])) return json({ error: "missing-fields" }, 400); map[body.slug]=body; } saveOverlay(o); return json({ [resource.slice(0,-1)]: catalogue()[resource as "products"|"collections"|"categories"].find((x:any)=>x[key] === (resource === "products" ? body.id : body.slug)) }); }
+  if (req.method === "PUT" && resource === "products" && id) { const existing = catalogue().products.find(x=>x.id===id); if (!existing) return json({ error: "not-found" },404); const patch=await req.json() as any; if (patch.name && !patch.slug) patch.slug=slugify(patch.name); map[id]={ ...(map[id]||{}), ...patch }; saveOverlay(o); return json({ product: catalogue().products.find(x=>x.id===id) }); }
+  return json({ error: "not-found" }, 404);
+}
+
 async function api(req: Request, pathname: string): Promise<Response | null> {
+  const admin = await adminApi(req, pathname); if (admin) return admin;
   if (pathname === "/api/rates" && req.method === "GET") {
     return ratesResponse();
   }
@@ -370,10 +408,16 @@ for (let attempt = 1; ; attempt++) {
           const file = Bun.file(CLIENT_DIR + pathname);
           if (await file.exists()) return new Response(file);
         }
-        const rendered = await (
-          handler as { fetch: (r: Request) => Response | Promise<Response> }
-        ).fetch(req);
-        return injectSSRRatePayload(rendered);
+        const merged = catalogue();
+        (globalThis as any).__CATALOGUE_SERVER__ = merged;
+        const rendered = await (handler as { fetch: (r: Request) => Response | Promise<Response> }).fetch(req);
+        let withCatalogue = rendered;
+        if ((rendered.headers.get("content-type") ?? "").includes("text/html")) {
+          const html = await rendered.text(); const payload = JSON.stringify(merged).replace(/</g, "\u003c");
+          const body = html.replace("</body>", `<script>window.__CATALOGUE__=${payload}</script></body>`);
+          const headers = new Headers(rendered.headers); headers.delete("content-length"); withCatalogue = new Response(body, { status: rendered.status, headers });
+        }
+        return injectSSRRatePayload(withCatalogue);
       },
     });
     break;

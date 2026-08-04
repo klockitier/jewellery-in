@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { bestSellers } from "~/config/products";
+import { bestSellers } from "~/lib/catalogue";
 import { ProductCard } from "~/components/ProductCard";
 import { pageHead } from "~/lib/seo";
 export const Route = createFileRoute("/best-sellers")({ head: () => pageHead({ title: "Best Sellers — Shri Madhav Jewellers", path: "/best-sellers" }), component: BestSellers });

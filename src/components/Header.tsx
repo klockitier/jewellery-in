@@ -6,8 +6,8 @@
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { categories, featuredCategories } from "~/config/categories";
-import { products } from "~/config/products";
+import { categories, featuredCategories } from "~/lib/catalogue";
+import { products } from "~/lib/catalogue";
 import { siteConfig } from "~/config/site";
 import { useCartCount } from "~/lib/cart";
 import { useRates } from "~/lib/useRates";

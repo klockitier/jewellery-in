@@ -5,10 +5,10 @@
  */
 
 import { useState } from "react";
-import { getCategory } from "~/config/categories";
+import { getCategory } from "~/lib/catalogue";
 import { computePrice, rateFor } from "~/config/pricing";
 import { fetchRates, getRates } from "~/config/rates";
-import type { Product } from "~/config/products";
+import type { Product } from "~/lib/catalogue";
 import { cartStore } from "~/lib/cart";
 import { formatINR, formatWeight } from "~/lib/format";
 import { getLatestRates } from "~/lib/useRates";

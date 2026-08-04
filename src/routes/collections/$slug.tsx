@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { collections } from "~/config/collections";
-import { products } from "~/config/products";
+import { collections } from "~/lib/catalogue";
+import { products } from "~/lib/catalogue";
 import { ProductCard } from "~/components/ProductCard";
 import { pageHead } from "~/lib/seo";
 const map:Record<string,string[]>={bridal:["necklaces","mangalsutra","jhumki","bangles"],everyday:["rings","chains","earrings","pendants"],gifting:["coins","silver","pendants"],heritage:["necklaces","bangles","kada","jhumki"]};
