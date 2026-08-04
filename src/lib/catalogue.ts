@@ -1,6 +1,6 @@
-import { products as seedProducts, type Product } from "~/lib/catalogue";
-import { collections as seedCollections, type Collection } from "~/lib/catalogue";
-import { categories as seedCategories, type Category } from "~/lib/catalogue";
+import { products as seedProducts, type Product } from "~/config/products";
+import { collections as seedCollections, type Collection } from "~/config/collections";
+import { categories as seedCategories, type Category } from "~/config/categories";
 export type Catalogue = { products: Product[]; collections: Collection[]; categories: Category[] };
 const current = (): Catalogue => {
   if (typeof window !== "undefined") return (window as any).__CATALOGUE__ || { products: seedProducts, collections: seedCollections, categories: seedCategories };
