@@ -26,7 +26,7 @@ export const testimonials: Testimonial[] = [
   {
     id: "t2",
     quote:
-      "I've bought from Shri Madhav for every festival for years. Fair pricing on gold and the family always treats you like their own.",
+      "I've bought from Yogesh for every festival for years. Fair pricing on gold and the family always treats you like their own.",
     name: "Rajesh Agarwal",
     location: "Delhi",
     rating: 5,

@@ -38,10 +38,10 @@ export const Route = createFileRoute("/product/$slug")({
   head: ({ params }) => {
     const p = getProduct(params.slug);
     return pageHead({
-      title: `${p?.name ?? "Product"} — Shri Madhav Jewellers`,
+      title: `${p?.name ?? "Product"} — Yogesh Jewellers`,
       description: p
         ? `${p.shortDescription} ${p.metal === "gold" ? "Gold" : "Silver"} ${p.purity}, ${formatWeight(p.weightGrams)}, priced transparently at today's live metal rate.`
-        : "This piece could not be found. Explore the full Shri Madhav Jewellers collection.",
+        : "This piece could not be found. Explore the full Yogesh Jewellers collection.",
       image: p?.images[0] ?? p?.image,
       path: `/product/${params.slug}`,
     });
@@ -659,7 +659,7 @@ function ProductPage() {
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-14">
           <div>
             <p className="eyebrow"><span className="eyebrow-line" aria-hidden="true" />The piece</p>
-            <h2 className="mt-3 font-display text-3xl text-ink">Handcrafted in the Shri Madhav tradition</h2>
+            <h2 className="mt-3 font-display text-3xl text-ink">Handcrafted in the Yogesh tradition</h2>
             <p className="mt-4 leading-relaxed text-ink-soft">{product.description}</p>
             <p className="mt-3 leading-relaxed text-muted">{product.shortDescription}</p>
             <div className="mt-5 flex flex-wrap gap-2">

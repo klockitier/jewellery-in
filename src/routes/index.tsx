@@ -1,5 +1,5 @@
 /**
- * Homepage — the premium storefront for Shri Madhav Jewellers.
+ * Homepage — the premium storefront for Yogesh Jewellers.
  * Sections (in order): hero, USP strip, live rates, collections, categories,
  * new arrivals, best sellers, testimonials, visit us, newsletter.
  */
@@ -36,7 +36,7 @@ import {
 export const Route = createFileRoute("/")({
   head: () =>
     pageHead({
-      title: "Shri Madhav Jewellers — Fine Gold & Silver Jewellery",
+      title: "Yogesh Jewellers — Fine Gold & Silver Jewellery",
       description:
         "Premium gold & silver jewellery with transparent live rates, BIS-hallmarked purity and a price-locking cart. Shop rings, chains, necklaces, mangalsutra, bangles and more.",
       path: "/",
@@ -160,7 +160,7 @@ function Hero() {
 const USPS = [
   { icon: ShieldIcon, title: "Certified Purity", text: "BIS-hallmarked gold & 925 silver" },
   { icon: GemIcon, title: "Transparent Pricing", text: "Live rates + making charges shown" },
-  { icon: ExchangeIcon, title: "Lifetime Exchange", text: "On every Shri Madhav piece" },
+  { icon: ExchangeIcon, title: "Lifetime Exchange", text: "On every Yogesh piece" },
   { icon: TruckIcon, title: "Insured Delivery", text: "Free, secure shipping across India" },
 ];
 
@@ -389,7 +389,7 @@ function VisitSection() {
             Our showroom
           </p>
           <h2 id="visit-title" className="mt-4 text-4xl leading-[1.08] sm:text-5xl">
-            Visit Shri Madhav Jewellers
+            Visit Yogesh Jewellers
           </h2>
           <Ornament className="mt-5 h-3 w-28 text-gold-deep" />
           <p className="mt-5 max-w-md leading-relaxed text-muted">

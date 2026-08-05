@@ -14,7 +14,7 @@ export interface SeoInput {
 
 const SITE_URL = "https://092f4fe8c2c6de6062d71800ad81fc1f.ctonew.app"; // published preview origin
 const DEFAULT_DESCRIPTION =
-  "Shri Madhav Jewellers — premium gold & silver jewellery with transparent live rates, BIS-hallmarked purity and a price-locking cart.";
+  "Yogesh Jewellers — premium gold & silver jewellery with transparent live rates, BIS-hallmarked purity and a price-locking cart.";
 const DEFAULT_IMAGE = "/images/og-image.jpg";
 
 export function pageHead({ title, description = DEFAULT_DESCRIPTION, image = DEFAULT_IMAGE, path = "/" }: SeoInput) {
@@ -24,7 +24,7 @@ export function pageHead({ title, description = DEFAULT_DESCRIPTION, image = DEF
     meta: [
       { title },
       { name: "description", content: description },
-      { property: "og:site_name", content: "Shri Madhav Jewellers" },
+      { property: "og:site_name", content: "Yogesh Jewellers" },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },

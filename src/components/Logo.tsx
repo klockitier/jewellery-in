@@ -33,7 +33,7 @@ export function Logo({ dark = false }: { dark?: boolean }) {
         <span
           className={`font-display text-[1.35rem] font-semibold tracking-wide ${dark ? "text-ivory" : "text-ink"}`}
         >
-          Shri Madhav
+          Yogesh
         </span>
         <span
           className={`mt-1 text-[0.6rem] font-medium uppercase tracking-[0.42em] ${dark ? "text-gold-bright" : "text-gold-deep"}`}

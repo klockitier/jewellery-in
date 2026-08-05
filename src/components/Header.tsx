@@ -29,7 +29,7 @@ import { Logo } from "./Logo";
 const TICKER_MESSAGES = [
   "BIS-hallmarked purity on every piece",
   "Transparent making charges — always shown",
-  "Lifetime exchange on Shri Madhav purchases",
+  "Lifetime exchange on Yogesh purchases",
   "Free insured shipping across India",
 ];
 

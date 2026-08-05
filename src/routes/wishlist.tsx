@@ -1,3 +1,3 @@
 import { createFileRoute } from "@tanstack/react-router"; import { pageHead } from "~/lib/seo";
-export const Route=createFileRoute("/wishlist")({head:()=>pageHead({title:"Wishlist — Shri Madhav Jewellers",path:"/wishlist"}),component:Wishlist});
+export const Route=createFileRoute("/wishlist")({head:()=>pageHead({title:"Wishlist — Yogesh Jewellers",path:"/wishlist"}),component:Wishlist});
 function Wishlist(){return <main className="bg-cream"><section className="mx-auto max-w-2xl px-5 py-24 text-center"><p className="eyebrow">Your saved pieces</p><h1 className="mt-4 text-5xl">Wishlist coming soon</h1><p className="mt-5 text-muted">Wishlist saving will be available soon. Browse our catalogue to discover your next piece.</p><a href="/catalogue" className="btn btn-gold mt-8 inline-flex">Browse jewellery</a></section></main>}

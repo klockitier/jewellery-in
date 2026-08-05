@@ -10,7 +10,7 @@ import { formatINR, formatDateTime } from "~/lib/format";
 import { newOrderId, ordersStore, type Order } from "~/lib/orders";
 import { payOrder, PAYMENT_GATEWAY, isPaymentConfigured, type PaymentMethod } from "~/lib/payment";
 import { pageHead } from "~/lib/seo";
-export const Route=createFileRoute("/checkout")({head:()=>pageHead({title:"Checkout — Shri Madhav Jewellers",description:"Secure checkout with locked jewellery rates.",path:"/checkout"}),component:Checkout});
+export const Route=createFileRoute("/checkout")({head:()=>pageHead({title:"Checkout — Yogesh Jewellers",description:"Secure checkout with locked jewellery rates.",path:"/checkout"}),component:Checkout});
 type Form={name:string;phone:string;email:string;address:string;city:string;state:string;pin:string;instructions:string;billingSame:boolean};
 const blank:Form={name:"",phone:"",email:"",address:"",city:"",state:"",pin:"",instructions:"",billingSame:true};
 function Checkout(){const items=useCartItems(); const nav=useNavigate(); const [step,setStep]=useState(1); const [form,setForm]=useState(blank); const [errors,setErrors]=useState<string[]>([]); const [code,setCode]=useState(""); const [coupon,setCoupon]=useState<Coupon>(); const [couponError,setCouponError]=useState(""); const [method,setMethod]=useState<PaymentMethod>("upi"); const [done,setDone]=useState(false); const [now,setNow]=useState(0); const [repriceNotice,setRepriceNotice]=useState(false); const [paymentConfigured,setPaymentConfigured]=useState(false); const [placing,setPlacing]=useState(false); const [paymentError,setPaymentError]=useState("");

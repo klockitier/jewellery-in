@@ -4,4 +4,4 @@ export interface Order { id: string; createdAt: string; items: CartItem[]; amoun
 const KEY="smj.orders.v1";
 function read(): Order[] { if(typeof window === "undefined") return []; try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch{return []} }
 export const ordersStore={ list:()=>read(), get:(id:string)=>read().find(o=>o.id===id), save:(o:Order)=>{const all=read(); localStorage.setItem(KEY,JSON.stringify([o,...all])); return o;} };
-export function newOrderId(){return `SMJ-${Math.random().toString(36).slice(2,10).toUpperCase()}`}
+export function newOrderId(){return `YJ-${Math.random().toString(36).slice(2,10).toUpperCase()}`}

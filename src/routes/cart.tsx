@@ -36,9 +36,9 @@ import { JewelIcon } from "~/components/JewelIcon";
 export const Route = createFileRoute("/cart")({
   head: () =>
     pageHead({
-      title: "Your Cart — Shri Madhav Jewellers",
+      title: "Your Cart — Yogesh Jewellers",
       description:
-        "Your Shri Madhav Jewellers cart — gold & silver rates are locked when you add a piece, so the price you see is the price you pay within the lock window.",
+        "Your Yogesh Jewellers cart — gold & silver rates are locked when you add a piece, so the price you see is the price you pay within the lock window.",
       path: "/cart",
     }),
   component: CartPage,

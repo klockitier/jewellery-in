@@ -1,5 +1,5 @@
 /**
- * Business configuration for Shri Madhav Jewellers.
+ * Business configuration for Yogesh Jewellers.
  *
  * NOTE: Several fields below are PLACEHOLDERS (address line, phone, email,
  * social handles) — the owner should supply the real values before launch.
@@ -58,11 +58,11 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  name: "Shri Madhav Jewellers",
-  shortName: "Shri Madhav",
+  name: "Yogesh Jewellers",
+  shortName: "Yogesh",
   tagline: "Fine gold & silver jewellery, crafted with devotion",
   description:
-    "Shri Madhav Jewellers is a premium Indian jewellery showroom offering handcrafted gold and silver jewellery — rings, chains, necklaces, mangalsutra, earrings, bangles and more — at transparent, live metal rates.",
+    "Yogesh Jewellers is a premium Indian jewellery showroom offering handcrafted gold and silver jewellery — rings, chains, necklaces, mangalsutra, earrings, bangles and more — at transparent, live metal rates.",
   estd: "Since 1987",
   address: {
     line1: "12, Main Market Road", // TODO(owner): confirm real showroom address
@@ -75,7 +75,7 @@ export const siteConfig: SiteConfig = {
   },
   phone: "+919800000000", // TODO(owner): real phone
   phoneDisplay: "+91 98000 00000",
-  email: "hello@shrimadhavjewellers.in", // TODO(owner): real email
+  email: "hello@yogeshjewellers.in", // TODO(owner): real email
   hours: [
     { days: "Monday – Saturday", hours: "10:30 AM – 8:30 PM" },
     { days: "Sunday", hours: "11:00 AM – 6:00 PM" },
