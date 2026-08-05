@@ -9,7 +9,7 @@ import { ProductCard } from "./ProductCard";
 type Props = { categorySlug?: string; searchMode?: boolean };
 const read = () => new URLSearchParams(window.location.search);
 const multi = (p: URLSearchParams, key: string) => p.get(key)?.split(",").filter(Boolean) ?? [];
-function price(p: Product) { const r=rateFor(p.metal,p.purity,getRates()); return computePrice({ratePerGram:r,weightGrams:p.weightGrams,makingCharge:p.makingCharge}).total * (1-(p.offerPercent??0)/100); }
+function price(p: Product) { const r=rateFor(p.metal,p.purity,getRates()); return computePrice({ratePerGram:r,weightGrams:p.weightGrams}).total * (1-(p.offerPercent??0)/100); }
 function matches(p: Product, q: string) { const c=getCategory(p.category); return [p.name,p.category,c?.name,p.metal,p.purity,p.occasion,p.gender,...p.tags].join(" ").toLowerCase().includes(q.toLowerCase()); }
 
 export function CatalogueView({ categorySlug, searchMode=false }: Props) {

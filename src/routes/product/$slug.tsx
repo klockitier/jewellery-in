@@ -297,7 +297,6 @@ function PurchasePanel({ product }: { product: Product }) {
   const breakdown = computePrice({
     ratePerGram: rate,
     weightGrams: product.weightGrams,
-    makingCharge: product.makingCharge,
   });
   const displayTotal = product.offerPercent ? breakdown.total * (1 - product.offerPercent / 100) : breakdown.total;
   const listTotal = product.offerPercent ? breakdown.total : null;
@@ -392,7 +391,7 @@ function PurchasePanel({ product }: { product: Product }) {
             <dd className="font-medium text-ink">{formatINR(breakdown.metalValue)}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-muted">Making charges</dt>
+            <dt className="text-muted">Making charges (15% of metal value)</dt>
             <dd className="font-medium text-ink">{formatINR(breakdown.makingCharge)}</dd>
           </div>
           <div className="flex justify-between">

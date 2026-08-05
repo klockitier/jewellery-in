@@ -40,7 +40,6 @@ export function ProductCard({ product }: Props) {
   const { total } = computePrice({
     ratePerGram: rate,
     weightGrams: product.weightGrams,
-    makingCharge: product.makingCharge,
   });
   const displayTotal = product.offerPercent ? total * (1 - product.offerPercent / 100) : total;
   const listTotal = product.offerPercent ? total : null;

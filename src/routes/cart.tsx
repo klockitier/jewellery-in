@@ -64,7 +64,6 @@ function lineMath(item: CartItem, product: Product): LineMath {
   const b = computePrice({
     ratePerGram: item.lockedRate,
     weightGrams: product.weightGrams,
-    makingCharge: product.makingCharge,
   });
   const list = b.total * item.qty;
   const pct = product.offerPercent ?? 0;
@@ -265,7 +264,7 @@ function OrderSummary({ items }: { items: Array<{ item: CartItem; product: Produ
       </p>
       <div className="mt-5 space-y-3">
         <SummaryRow label="Metal value (locked rates)" value={formatINR(sums.metalValue)} />
-        <SummaryRow label="Making charges" value={formatINR(sums.making)} />
+        <SummaryRow label="Making charges (15%)" value={formatINR(sums.making)} />
         <SummaryRow label="GST (3%)" value={formatINR(sums.gst)} />
         <SummaryRow
           label="Offer discounts"
